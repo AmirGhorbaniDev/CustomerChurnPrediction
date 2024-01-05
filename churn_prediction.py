@@ -35,9 +35,19 @@ def eda(df):
     print("\nChurn Rate:")
     print(churn_rate)
 
+
     # Plot Churn Distribution
     plt.figure(figsize=(8, 5))
     sns.countplot(data=df, x='churn', palette='viridis')
     plt.title("Churn Distribution")
     plt.savefig("charts/churn_distribution.png")
     plt.show()
+
+# Step 3: Preprocess data
+def preprocess_data(df):
+    df = pd.get_dummies(df, columns=['contract_type'], drop_first=True)
+    X = df.drop(columns=['customer_id', 'churn'])
+    y = df['churn']
+    scaler = StandardScaler()
+    X_scaled = scaler.fit_transform(X)
+    return train_test_split(X_scaled, y, test_size=0.2, random_state=42)
