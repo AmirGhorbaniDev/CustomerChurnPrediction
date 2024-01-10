@@ -51,3 +51,21 @@ def preprocess_data(df):
     scaler = StandardScaler()
     X_scaled = scaler.fit_transform(X)
     return train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+
+# Step 4: Train models and evaluate
+def train_and_evaluate(X_train, X_test, y_train, y_test):
+    models = {
+        'Logistic Regression': LogisticRegression(),
+        'Random Forest': RandomForestClassifier(),
+        'SVM': SVC(probability=True),
+        'Gradient Boosting': GradientBoostingClassifier()
+    }
+
+    results = {}
+    for name, model in models.items():
+        print(f"Training {name}...")
+        model.fit(X_train, y_train)
+        y_pred = model.predict(X_test)
+        y_prob = model.predict_proba(X_test)[:, 1] if hasattr(model, "predict_proba") else None
+
+        accuracy = accuracy_score(y_test, y_pred)
