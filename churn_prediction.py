@@ -67,5 +67,21 @@ def train_and_evaluate(X_train, X_test, y_train, y_test):
         model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
         y_prob = model.predict_proba(X_test)[:, 1] if hasattr(model, "predict_proba") else None
-
+ # Metrics
         accuracy = accuracy_score(y_test, y_pred)
+        report = classification_report(y_test, y_pred, output_dict=True)
+        results[name] = {
+            'model': model,
+            'accuracy': accuracy,
+            'classification_report': report
+        }
+
+        # Confusion Matrix
+        conf_matrix = confusion_matrix(y_test, y_pred)
+        plot_confusion_matrix(conf_matrix, name)
+
+        # ROC Curve
+        if y_prob is not None:
+            plot_roc_curve(y_test, y_prob, name)
+
+    return results
