@@ -109,3 +109,14 @@ def plot_roc_curve(y_test, y_prob, model_name):
     plt.legend(loc="lower right")
     plt.savefig(f"charts/roc_curve_{model_name}.png")
     plt.show()
+
+# Step 7: Save results
+def save_results(results, output_file='results.txt'):
+    with open(output_file, 'w') as f:
+        for model_name, metrics in results.items():
+            f.write(f"Model: {model_name}\n")
+            f.write(f"Accuracy: {metrics['accuracy']:.2f}\n")
+            f.write("Classification Report:\n")
+            for label, scores in metrics['classification_report'].items():
+                f.write(f"{label}: {scores}\n")
+            f.write("\n")
