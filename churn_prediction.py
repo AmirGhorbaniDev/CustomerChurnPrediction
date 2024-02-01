@@ -86,3 +86,28 @@ def train_and_evaluate(X_train, X_test, y_train, y_test):
 
     return results
 
+# Step 5: Plot confusion matrix
+def plot_confusion_matrix(matrix, model_name):
+    plt.figure(figsize=(6, 5))
+    sns.heatmap(matrix, annot=True, fmt="d", cmap="Blues", cbar=False)
+    plt.title(f"Confusion Matrix: {model_name}")
+    plt.xlabel("Predicted")
+    plt.ylabel("Actual")
+    plt.savefig(f"charts/confusion_matrix_{model_name}.png")
+    plt.show()
+
+# Step 6: Plot ROC Curve
+def plot_roc_curve(y_test, y_prob, model_name):
+    fpr, tpr, _ = roc_curve(y_test, y_prob)
+    roc_auc = auc(fpr, tpr)
+
+    plt.figure(figsize=(8, 6))
+    plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC Curve (AUC = {roc_auc:.2f})')
+    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    plt.title(f"ROC Curve: {model_name}")
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.legend(loc="lower right")
+    plt.savefig(f"charts/roc_curve_{model_name}.png")
+    plt.show()
+    
