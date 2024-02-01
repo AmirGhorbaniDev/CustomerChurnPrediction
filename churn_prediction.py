@@ -120,3 +120,26 @@ def save_results(results, output_file='results.txt'):
             for label, scores in metrics['classification_report'].items():
                 f.write(f"{label}: {scores}\n")
             f.write("\n")
+
+# Main pipeline
+if __name__ == "__main__":
+    # Create necessary directories
+    os.makedirs('data', exist_ok=True)
+    os.makedirs('charts', exist_ok=True)
+
+    # Generate and save data
+    churn_data = generate_data()
+    churn_data.to_csv('data/churn_data.csv', index=False)
+
+    # Perform EDA
+    eda(churn_data)
+
+    # Preprocess data
+    X_train, X_test, y_train, y_test = preprocess_data(churn_data)
+
+    # Train and evaluate models
+    results = train_and_evaluate(X_train, X_test, y_train, y_test)
+
+    # Save results
+    save_results(results)
+    print("Results saved to results.txt")
